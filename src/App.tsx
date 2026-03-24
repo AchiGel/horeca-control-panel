@@ -6,14 +6,17 @@ import MinutesInput from "./components/MinutesInput";
 import { postArticle } from "./api/api";
 
 const App = () => {
-  const [form, setForm] = useState({
+  const INITIAL_FORM = {
     title: "",
     description: "",
     body: "",
     category: "restaurants",
     imageUrl: "",
     minutesRead: "",
-  });
+  };
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -26,8 +29,16 @@ const App = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(form);
-    postArticle(form);
+    setLoading(true);
+    setError(null);
+    try {
+      await postArticle(form);
+      setForm(INITIAL_FORM);
+    } catch {
+      setError("Failed to post article. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -68,9 +79,14 @@ const App = () => {
         <MinutesInput value={form.minutesRead} handleChange={handleChange} />
 
         {/* Submit */}
-        <button type="submit" className="bg-black text-white px-4 py-2 rounded">
-          Post Article
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-black text-white px-4 py-2 rounded disabled:opacity-50"
+        >
+          {loading ? "Posting..." : "Post Article"}
         </button>
+        {error && <div>{error}</div>}
       </form>
     </div>
   );

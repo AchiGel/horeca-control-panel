@@ -9,11 +9,7 @@ type FormType = {
   minutesRead: string;
 };
 
-export const postArticle = async ({
-  formProvided,
-}: {
-  formProvided: FormType;
-}) => {
+export const postArticle = async (formProvided: FormType) => {
   try {
     const res = await fetch(`${BASE_URL}/articles`, {
       method: "POST",
@@ -29,7 +25,10 @@ export const postArticle = async ({
     });
 
     if (!res.ok) throw new Error("Failed to post");
+
+    return await res.json();
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    throw err;
   }
 };
