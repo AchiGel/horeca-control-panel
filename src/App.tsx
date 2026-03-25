@@ -9,6 +9,7 @@ const App = () => {
   const INITIAL_FORM = {
     title: "",
     description: "",
+    slug: "",
     body: "",
     category: "restaurants",
     imageUrl: "",
@@ -16,7 +17,7 @@ const App = () => {
   };
   const [form, setForm] = useState(INITIAL_FORM);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -30,12 +31,13 @@ const App = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setMessage(null);
     try {
       await postArticle(form);
+      setMessage("Article posted successfully!")
       setForm(INITIAL_FORM);
     } catch {
-      setError("Failed to post article. Please try again.");
+      setMessage("Failed to post article. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -50,6 +52,13 @@ const App = () => {
         <TextInput
           inputCategory={"title"}
           value={form.title}
+          handleChange={handleChange}
+        />
+
+        {/* Slug */}
+        <TextInput
+          inputCategory="slug"
+          value={form.slug}
           handleChange={handleChange}
         />
 
@@ -86,7 +95,7 @@ const App = () => {
         >
           {loading ? "Posting..." : "Post Article"}
         </button>
-        {error && <div>{error}</div>}
+        {message && <div>{message}</div>}
       </form>
     </div>
   );
