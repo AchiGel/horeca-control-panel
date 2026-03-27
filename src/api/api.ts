@@ -3,32 +3,42 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 type FormType = {
   title: string;
   description: string;
+  slug: string;
   body: string;
   category: string;
   imageUrl: string;
   minutesRead: string;
 };
 
-export const postArticle = async (formProvided: FormType) => {
-  try {
-    const res = await fetch(`${BASE_URL}/articles`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...formProvided,
-        body: formProvided.body.split("\n"),
-        categories: [formProvided.category],
-        minutesRead: Number(formProvided.minutesRead),
-      }),
-    });
+const transformForm = (form: FormType) => ({
+  ...form,
+  body: form.body.split("\n"),
+  categories: [form.category],
+  minutesRead: Number(form.minutesRead),
+});
 
-    if (!res.ok) throw new Error("Failed to post");
+export const postArticle = async (form: FormType) => {
+  const res = await fetch(`${BASE_URL}/articles`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(transformForm(form)),
+  });
+  if (!res.ok) throw new Error("Failed to post article");
+  return res.json();
+};
 
-    return await res.json();
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
+export const editArticle = async (form: FormType) => {
+  const res = await fetch(`${BASE_URL}/articles/${form.slug}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(transformForm(form)),
+  });
+  if (!res.ok) throw new Error("Failed to edit article");
+  return res.json();
+};
+
+export const fetchArticleBySlug = async (slug: string) => {
+  const res = await fetch(`${BASE_URL}/articles/${slug}`);
+  if (!res.ok) throw new Error("Article not found");
+  return res.json();
 };
