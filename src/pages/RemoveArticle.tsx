@@ -1,22 +1,20 @@
 import { useState } from "react";
 import { removeArticle } from "../api/api";
-import StatusMessage from "../components/StatusMessage";
+import toast, { Toaster } from "react-hot-toast";
 
 const RemoveArticle = () => {
   const [slug, setSlug] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
 
   const handleRemove = async () => {
     if (!slug) return;
     setLoading(true);
-    setMessage(null);
     try {
       await removeArticle(slug);
-      setMessage("Article removed successfully!");
+      toast.success("Article removed successfully!");
       setSlug("");
     } catch {
-      setMessage("Failed to remove article. Please try again.");
+      toast.error("Failed to remove article. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -37,7 +35,7 @@ const RemoveArticle = () => {
       >
         {loading ? "Removing..." : "Remove Article"}
       </button>
-      <StatusMessage message={message} />
+      <Toaster position="bottom-right" />
     </div>
   );
 };

@@ -2,24 +2,21 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import { fetchArticleBySlug, editArticle } from "../api/api";
 import { INITIAL_FORM } from "../constants/article";
 import ArticleForm from "../components/ArticleForm";
-import StatusMessage from "../components/StatusMessage";
+import toast, { Toaster } from "react-hot-toast";
 
 const EditArticle = () => {
   const [slugSearch, setSlugSearch] = useState("");
   const [form, setForm] = useState(INITIAL_FORM);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
-  const [updateMessage, setUpdateMessage] = useState<string | null>(null);
-  const [fetchingMessage, setFetchingMessage] = useState<string | null>(null);
 
   const handleFetch = async () => {
     setFetching(true);
-    setFetchingMessage(null);
     try {
       const article = await fetchArticleBySlug(slugSearch);
       setForm(article);
     } catch {
-      setFetchingMessage("Article not found!");
+      toast.error("Article not found!");
     } finally {
       setFetching(false);
     }
@@ -34,15 +31,14 @@ const EditArticle = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setUpdateMessage(null);
+
     try {
       await editArticle(form, slugSearch);
-      setUpdateMessage("Article updated successfully!");
+      toast.success("Article updated successfully!");
       setForm(INITIAL_FORM);
       setSlugSearch("");
-    } catch (err) {
-      setUpdateMessage("Failed to update article. Please try again.");
-      console.log(err);
+    } catch {
+      toast.error("Failed to update article. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -68,7 +64,7 @@ const EditArticle = () => {
             {fetching ? "Loading..." : "Load"}
           </button>
         </div>
-        <StatusMessage message={fetchingMessage} />
+        <Toaster position="bottom-right" />
       </div>
 
       <ArticleForm
@@ -77,7 +73,6 @@ const EditArticle = () => {
         onSubmit={handleSubmit}
         loading={loading}
         submitLabel={"Edit Article"}
-        message={updateMessage}
       />
     </div>
   );

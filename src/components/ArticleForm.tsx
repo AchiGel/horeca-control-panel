@@ -1,10 +1,10 @@
 import type { ChangeEvent, FormEvent } from "react";
 import MinutesInput from "./MinutesInput";
 import Select from "./Select";
-import StatusMessage from "./StatusMessage";
 import TextArea from "./TextArea";
 import TextInput from "./TextInput";
 import type { ArticleFormType } from "../constants/article";
+import { Toaster } from "react-hot-toast";
 
 type Props = {
   form: ArticleFormType;
@@ -14,7 +14,6 @@ type Props = {
   onSubmit: (e: FormEvent) => void;
   loading: boolean;
   submitLabel: string;
-  message: string | null;
 };
 
 const ArticleForm = ({
@@ -23,7 +22,6 @@ const ArticleForm = ({
   onSubmit,
   loading,
   submitLabel,
-  message,
 }: Props) => {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
@@ -57,7 +55,7 @@ const ArticleForm = ({
       >
         {loading ? "Loading..." : submitLabel}
       </button>
-      <StatusMessage message={message} />
+      <Toaster position="bottom-right" />
     </form>
   );
 };
