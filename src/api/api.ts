@@ -28,7 +28,7 @@ export const postArticle = async (form: FormType) => {
 };
 
 export const editArticle = async (form: FormType) => {
-  const res = await fetch(`${BASE_URL}/articles/${form.slug}`, {
+  const res = await fetch(`${BASE_URL}/articles/slug/${form.slug}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(transformForm(form)),
@@ -38,13 +38,13 @@ export const editArticle = async (form: FormType) => {
 };
 
 export const fetchArticleBySlug = async (slug: string) => {
-  const res = await fetch(`${BASE_URL}/articles/${slug}`);
+  const res = await fetch(`${BASE_URL}/articles/slug/${slug}`);
   if (!res.ok) throw new Error("Article not found");
   return res.json();
 };
 
 export const removeArticle = async (slug: string) => {
-  const res = await fetch(`${BASE_URL}/articles/${slug}`, {
+  const res = await fetch(`${BASE_URL}/articles/slug/${slug}`, {
     method: "DELETE",
   });
   if (!res.ok) throw new Error("Failed to remove article");
