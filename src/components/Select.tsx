@@ -14,7 +14,7 @@ const Select = ({
 }) => {
   return (
     <div>
-      <label className="block mb-1">Category</label>
+      <label className="block mb-1 font-bold">Category</label>
       <select
         name="category"
         value={value}

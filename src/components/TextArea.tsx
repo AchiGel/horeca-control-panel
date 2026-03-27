@@ -14,7 +14,7 @@ const TextArea = ({
 }) => {
   return (
     <div>
-      <label className="block mb-1">Body (each line = paragraph)</label>
+      <label className="block mb-1 font-bold">Body (each line = paragraph)</label>
       <textarea
         name="body"
         value={value}

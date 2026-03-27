@@ -1,102 +1,45 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
-import TextInput from "./components/TextInput";
-import TextArea from "./components/TextArea";
-import Select from "./components/Select";
-import MinutesInput from "./components/MinutesInput";
-import { postArticle } from "./api/api";
+import { NavLink, Outlet } from "react-router-dom";
+import { PenLine, Pencil, Trash2 } from "lucide-react";
+
+const navItems = [
+  { to: "/", label: "Post Article", icon: PenLine },
+  { to: "/edit", label: "Edit Article", icon: Pencil },
+  { to: "/remove", label: "Remove Article", icon: Trash2 },
+];
 
 const App = () => {
-  const INITIAL_FORM = {
-    title: "",
-    description: "",
-    slug: "",
-    body: "",
-    category: "restaurants",
-    imageUrl: "",
-    minutesRead: "",
-  };
-  const [form, setForm] = useState(INITIAL_FORM);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => {
-    setForm((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage(null);
-    try {
-      await postArticle(form);
-      setMessage("Article posted successfully!")
-      setForm(INITIAL_FORM);
-    } catch {
-      setMessage("Failed to post article. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Horeca Georgia Control Panel</h1>
+    <div className="min-h-screen flex bg-gray-50">
+      <aside className="w-56 bg-white border-r border-gray-200 p-4 flex flex-col gap-1">
+        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-2">
+          Articles
+        </div>
+        {navItems.map(({ to, label, icon: Icon }) => (
+          <NavLink
+            key={to}
+            to={to}
+            className={({ isActive }) =>
+              `flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                isActive
+                  ? "bg-blue-50 text-blue-700"
+                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+              }`
+            }
+          >
+            <Icon size={16} />
+            {label}
+          </NavLink>
+        ))}
+      </aside>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Title */}
-        <TextInput
-          inputCategory={"title"}
-          value={form.title}
-          handleChange={handleChange}
-        />
-
-        {/* Slug */}
-        <TextInput
-          inputCategory="slug"
-          value={form.slug}
-          handleChange={handleChange}
-        />
-
-        {/* Description */}
-
-        <TextInput
-          inputCategory={"description"}
-          value={form.description}
-          handleChange={handleChange}
-        />
-
-        {/* Body */}
-        <TextArea value={form.body} handleChange={handleChange} />
-
-        {/* Category */}
-        <Select value={form.category} handleChange={handleChange} />
-
-        {/* Image URL */}
-
-        <TextInput
-          inputCategory="imageUrl"
-          value={form.imageUrl}
-          handleChange={handleChange}
-        />
-
-        {/* Minutes Read */}
-        <MinutesInput value={form.minutesRead} handleChange={handleChange} />
-
-        {/* Submit */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-black text-white px-4 py-2 rounded disabled:opacity-50"
-        >
-          {loading ? "Posting..." : "Post Article"}
-        </button>
-        {message && <div>{message}</div>}
-      </form>
+      <main className="flex-1 p-8">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">
+          Horeca Georgia Control Panel
+        </h1>
+        <div className="max-w-360 mx-auto px-10">
+          <Outlet />
+        </div>
+      </main>
     </div>
   );
 };

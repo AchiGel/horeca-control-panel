@@ -14,7 +14,7 @@ const MinutesInput = ({
 }) => {
   return (
     <div>
-      <label className="block mb-1">Minutes Read</label>
+      <label className="block mb-1 font-bold">Minutes Read</label>
       <input
         type="number"
         name="minutesRead"

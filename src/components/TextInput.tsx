@@ -16,7 +16,7 @@ const TextInput = ({
 }) => {
   return (
     <div>
-      <label className="block mb-1">{inputCategory}</label>
+      <label className="block mb-1 font-bold">{inputCategory}</label>
       <input
         type="text"
         name={inputCategory}
