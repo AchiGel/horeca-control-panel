@@ -50,7 +50,11 @@ const ArticleForm = ({
         handleChange={handleChange}
       />
       <MinutesInput value={form.minutesRead} handleChange={handleChange} />
-      <button type="submit" disabled={loading}>
+      <button
+        type="submit"
+        disabled={loading}
+        className="bg-gray-800 text-white px-4 py-2 rounded disabled:opacity-50 cursor-pointer"
+      >
         {loading ? "Loading..." : submitLabel}
       </button>
       <StatusMessage message={message} />

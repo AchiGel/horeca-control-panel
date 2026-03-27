@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { removeArticle } from "../api/api";
+import StatusMessage from "../components/StatusMessage";
 
 const RemoveArticle = () => {
   const [slug, setSlug] = useState("");
@@ -32,11 +33,11 @@ const RemoveArticle = () => {
       <button
         onClick={handleRemove}
         disabled={loading || !slug}
-        className="bg-red-600 text-white px-4 py-2 rounded disabled:opacity-50"
+        className="bg-red-600 text-white px-4 py-2 rounded disabled:opacity-50 cursor-pointer"
       >
         {loading ? "Removing..." : "Remove Article"}
       </button>
-      {message && <div>{message}</div>}
+      <StatusMessage message={message} />
     </div>
   );
 };

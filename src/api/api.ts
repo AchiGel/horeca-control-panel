@@ -27,8 +27,8 @@ export const postArticle = async (form: FormType) => {
   return res.json();
 };
 
-export const editArticle = async (form: FormType) => {
-  const res = await fetch(`${BASE_URL}/articles/slug/${form.slug}`, {
+export const editArticle = async (form: FormType, slug: string) => {
+  const res = await fetch(`${BASE_URL}/articles/slug/${slug}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(transformForm(form)),
