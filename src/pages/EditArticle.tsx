@@ -39,6 +39,7 @@ const EditArticle = () => {
       await editArticle(form, slugSearch);
       setUpdateMessage("Article updated successfully!");
       setForm(INITIAL_FORM);
+      setSlugSearch("");
     } catch (err) {
       setUpdateMessage("Failed to update article. Please try again.");
       console.log(err);

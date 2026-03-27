@@ -40,7 +40,11 @@ export const editArticle = async (form: FormType, slug: string) => {
 export const fetchArticleBySlug = async (slug: string) => {
   const res = await fetch(`${BASE_URL}/articles/slug/${slug}`);
   if (!res.ok) throw new Error("Article not found");
-  return res.json();
+  const data = await res.json();
+  return {
+    ...data,
+    body: Array.isArray(data.body) ? data.body.join("\n") : data.body,
+  };
 };
 
 export const removeArticle = async (slug: string) => {
