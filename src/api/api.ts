@@ -42,3 +42,11 @@ export const fetchArticleBySlug = async (slug: string) => {
   if (!res.ok) throw new Error("Article not found");
   return res.json();
 };
+
+export const removeArticle = async (slug: string) => {
+  const res = await fetch(`${BASE_URL}/articles/${slug}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("Failed to remove article");
+  return res.json();
+};
