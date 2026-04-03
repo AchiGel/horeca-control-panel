@@ -23,7 +23,7 @@ const Select = ({
       >
         <option value="news">News</option>
         <option value="gastronomy">Gastronomy</option>
-        <option value="business_&_tech">Business & Tech</option>
+        <option value="business-and-tech">Business & Tech</option>
         <option value="hotels">Hotels</option>
         <option value="interviews">Interviews</option>
       </select>
