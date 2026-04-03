@@ -3,7 +3,7 @@ export const INITIAL_FORM = {
   description: "",
   slug: "",
   body: "",
-  category: "restaurants",
+  category: "hotels",
   imageUrl: "",
   minutesRead: "",
 };

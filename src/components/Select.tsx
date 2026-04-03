@@ -21,12 +21,11 @@ const Select = ({
         onChange={handleChange}
         className="w-full border p-2 rounded"
       >
-        <option value="restaurants">Restaurants</option>
-        <option value="cafes">Cafes</option>
-        <option value="catering">Catering</option>
+        <option value="news">News</option>
+        <option value="gastronomy">Gastronomy</option>
+        <option value="business_&_tech">Business & Tech</option>
         <option value="hotels">Hotels</option>
-        <option value="management">Management</option>
-        <option value="trends">Trends</option>
+        <option value="interviews">Interviews</option>
       </select>
     </div>
   );
